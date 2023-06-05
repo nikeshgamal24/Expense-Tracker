@@ -11,7 +11,12 @@ class ExpenseItem extends StatelessWidget{
   @override
   Widget build(context){
     return Card(
-      child: Column(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
+        child: Column(
         children: [
           Text(expense.title),
           const SizedBox(height: 5,),
@@ -30,6 +35,8 @@ class ExpenseItem extends StatelessWidget{
           )
         ],
       ),
+        ),
+      
     );
   }
 }
