@@ -49,6 +49,13 @@ class _ExpensesState extends State<Expenses>{
     });
   }
 
+  //functino to remove the swippedout expense details
+  void _removeExpense(Expense expense){
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+  }
+
   @override
   Widget build(context){
     return Scaffold(
@@ -67,7 +74,7 @@ class _ExpensesState extends State<Expenses>{
         children: [
            const Text('The chart'),
            Expanded(
-           child: ExpensesList(expenses: _registeredExpenses),
+           child: ExpensesList(expenses: _registeredExpenses,onRemoveExpense: _removeExpense,),
            ), 
         ],
       ),
