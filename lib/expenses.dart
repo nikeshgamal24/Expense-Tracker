@@ -16,7 +16,6 @@ class Expenses extends StatefulWidget{
 
 class _ExpensesState extends State<Expenses>{
 
-
   final List<Expense> _registeredExpenses = [
     Expense(
       title: 'Flutter course', 
@@ -51,13 +50,40 @@ class _ExpensesState extends State<Expenses>{
 
   //functino to remove the swippedout expense details
   void _removeExpense(Expense expense){
+    final expenseIndex = _registeredExpenses.indexOf(expense);
+
     setState(() {
       _registeredExpenses.remove(expense);
     });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+       SnackBar(
+        duration: const  Duration(seconds: 5),
+        content: const Text('Expense deleted'),
+        action: SnackBarAction(
+          label: 'Undo', 
+          onPressed: (){
+            setState(() {
+              _registeredExpenses.insert(expenseIndex, expense);
+            });
+          },
+          ),
+        ),
+    );
   }
+
+ 
 
   @override
   Widget build(context){
+      Widget mainContent = const Center(
+                  child: Text('No expenses found. Start adding some!'),
+       );
+
+        if(_registeredExpenses.isNotEmpty){
+               mainContent =  ExpensesList(expenses: _registeredExpenses,onRemoveExpense: _removeExpense,);
+          }
+    
     return Scaffold(
           //to have the button displayed on the top of your screen we can use appBar parameter under 'Scaffold' 
           appBar: AppBar(
@@ -74,7 +100,7 @@ class _ExpensesState extends State<Expenses>{
         children: [
            const Text('The chart'),
            Expanded(
-           child: ExpensesList(expenses: _registeredExpenses,onRemoveExpense: _removeExpense,),
+           child: mainContent,
            ), 
         ],
       ),

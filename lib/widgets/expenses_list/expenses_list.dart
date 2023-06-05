@@ -19,7 +19,7 @@ class ExpensesList extends StatelessWidget{
       itemBuilder: (context, index) => Dismissible(
         //Dismissible widget will give us the swipping effect
                 key: ValueKey(expenses[index],), 
-                //when we dismiss a expense then a function is to be invoked so that the expense details in _registeredLIst will be updated so that there won't be any mis-matched in the internal save values and rendered UI
+                //when we dismiss a expense then a function is to be invoked so that the expense details in _registeredLIst will be updated so that there won't be any mis-matched in the internal save values and rendered UI      
                 onDismissed: (direction){
                   onRemoveExpense(expenses[index]);
                 },
