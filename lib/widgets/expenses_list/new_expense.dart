@@ -3,7 +3,10 @@ import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget{
   //since we need to work on the state and update the rendered UI
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  //creating a function that will receive a field values as an argument then pass it to the expenses.dart file and there we will be updateding the _registeredExpenses list and update the UI thorught setState()
+  final void Function(Expense expense) onAddExpense;
 
 
   @override
@@ -67,7 +70,25 @@ class _NewExpenseState extends State<NewExpense>{
               child:const Text('Okay'))
           ],
         ));
+
+        return;
+        //if any validation error is there then the code will return from this line will not go further
     }
+
+    //if code does have any validation error then the control will reach to this section
+    //we need to pass the data/ inputs given by the user to the function as an argumnet as the updated _registeredExpenses lies on another Widget so we create a funcion and pass the value to that function
+
+    //to have the access of the class property we use 'widget'
+    widget.onAddExpense(
+      Expense(
+        title: _titleController.text.trim(), 
+        amount: enteredAmount, 
+        date: _selectedDate!, //_selectedDate and ! --> the variable _selectedDate is not null or can not be null
+        category: _selectedCategory)
+      );
+
+      //to close the modal automatically after saving the new expense 
+      Navigator.pop(context);
   }
 
 
@@ -75,7 +96,7 @@ class _NewExpenseState extends State<NewExpense>{
   @override
   Widget build(context){
     return  Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16,48,16,16),
       child: Column(
         children: [
           TextField(
@@ -114,6 +135,8 @@ class _NewExpenseState extends State<NewExpense>{
               ],
             ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               DropdownButton(
                 value: _selectedCategory,
@@ -133,16 +156,21 @@ class _NewExpenseState extends State<NewExpense>{
                   });
                 },
                 ),
-              TextButton(
-                onPressed: (){
-                  Navigator.pop(context);
-                }, 
-                child: const Text('Cancel')),
-              ElevatedButton(
-                onPressed:_submitExpenseData, 
-                child: const Text('Save Expense'),
-                ),
-            ],
+                Row(
+                  children: [
+                     TextButton(
+                        onPressed: (){
+                        Navigator.pop(context);
+                      }, 
+                       child: const Text('Cancel')
+                    ),
+                      ElevatedButton(
+                         onPressed:_submitExpenseData, 
+                         child: const Text('Save Expense'),
+                   ),
+                 ],
+                )
+            ]
           ),
         ],
       ),

@@ -36,9 +36,17 @@ class _ExpensesState extends State<Expenses>{
   //invoking the function will enable the overlay 
   void _openAddExpenseOverlay(){
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context, 
-      builder: (ctx)=> const NewExpense()
+      builder: (ctx)=> NewExpense(onAddExpense: _addExpense,),//as it is the named parameter
       );
+  }
+
+  //creating the function that will updated the _registeredExpenses list and update the rendered UI 
+  void _addExpense(Expense expense){
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
   }
 
   @override
